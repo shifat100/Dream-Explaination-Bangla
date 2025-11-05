@@ -14,12 +14,13 @@
 }
 
 body {
-    background-image: url('bg.png');
+    /* background-image: url('bg.png');
     background-repeat: no-repeat;
     background-size: cover;
-    /*background: linear-gradient(135deg, rgba(0, 120, 215, 0.2), rgba(255, 255, 255, 0.1));*/
+    background: linear-gradient(135deg, rgba(0, 120, 215, 0.2), rgba(255, 255, 255, 0.1));*/
     color: #222;
-    
+    padding:0px;
+    margin: 0px;
 }
 
 /* Header */
@@ -304,4 +305,5 @@ h2 {font-size: 16px;}
     font-size: 10px;
 }
 }
+
 
