@@ -1,0 +1,278 @@
+@font-face {
+    font-family: 'bangla';
+    src: url('font.ttf');
+}
+
+/* Base Reset */
+* {
+    box-sizing: border-box;
+    outline: 0;
+    margin: 0;
+    padding: 0;
+    font-family: 'bangla';
+    transition: .3s;
+}
+
+body {
+    background-image: url('bg.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    /*background: linear-gradient(135deg, rgba(0, 120, 215, 0.2), rgba(255, 255, 255, 0.1));*/
+    color: #222;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    
+}
+
+/* Header */
+header {
+    background: rgba(0, 120, 215, 0.4);
+    color: #fff;
+    padding: 5px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+/* Search bar */
+#searchBar {
+    display: flex;
+    gap: 5px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+#searchInput {
+    flex: 1;
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 5px;
+    width: 100%;
+    display: block;
+    background: rgba(255, 255, 255, 0.3);
+    color: #000;
+    backdrop-filter: blur(8px);
+}
+
+/* Buttons */
+button {
+    font-size: 20px;
+    border: none;
+    border-radius: 10px;
+    padding: 2px 5px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.25);
+    color: #000;
+    backdrop-filter: blur(8px);
+    transition: all 0.2s ease;
+}
+button:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* List and Article views */
+#listView,
+#articleView {
+    padding: 5px;
+    overflow-y: auto;
+}
+
+#listView {
+    height: calc(100vh - 100px);
+    
+}
+
+/* List Items */
+.item {
+    padding: 8px;
+    margin-bottom: 4px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transition: 0.3s ease;
+    backdrop-filter: blur(10px);
+    font-size: 14px;
+}
+
+.item:focus {
+    background: rgba(0, 120, 215, 0.4);
+    color: #fff;
+    border-color: rgba(0, 120, 215, 0.5);
+    box-shadow: 0 0 10px rgba(0, 120, 215, 0.6);
+}
+
+/* Article view */
+#articleView {
+    display: none;
+    height: calc(100vh - 53px);
+}
+
+#articleContent {
+    line-height: 1.5em;
+    font-size: 15px;
+}
+
+#articleContent h2 {
+    line-height: 1.5em;
+    margin-bottom: 15px;
+    text-align: center;
+    display: block;
+}
+
+p {
+    display: block;
+    margin: 2px 0px;
+}
+
+/* Softkeys */
+#softkeys {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(20, 20, 20, 0.5);
+    color: #fff;
+    font-size: 13px;
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 10px;
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Dark mode */
+.dark {
+    background: linear-gradient(135deg, rgba(10, 10, 10, 0.9), rgba(30, 30, 30, 0.7));
+    color: #eee;
+}
+
+.dark header {
+    background: rgba(60, 60, 60, 0.6);
+}
+
+.dark .item {
+    background: rgba(40, 40, 40, 0.6);
+    color: #eee;
+    border-color: rgba(100, 100, 100, 0.4);
+}
+
+.dark .item:focus {
+    background: rgba(0, 120, 215, 0.5);
+    color: #fff;
+}
+
+.dark #searchBar {
+    background: rgba(30, 30, 30, 0.6);
+}
+
+.dark #searchInput {
+    background: rgba(50, 50, 50, 0.4);
+    color: #fff;
+    border-color: rgba(100, 100, 100, 0.5);
+}
+
+/* Font Controls */
+#fontControls {
+    margin-top: 5px;
+    display: flex;
+    gap: 5px;
+}
+
+#fontControls button {
+    padding: 4px 6px;
+    font-size: 12px;
+}
+
+/* Bookmarked Items */
+.bookmarked {
+    background: rgba(255, 204, 0, 0.6) !important;
+    color: #000 !important;
+}
+
+/* Article Controls */
+#articleControls {
+    margin-top: 4px;
+    display: flex;
+    gap: 5px;
+}
+
+#articleControls button {
+    padding: 4px 6px;
+    font-size: 12px;
+}
+
+/* Loading Overlay */
+#loadingOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    color: #333;
+    z-index: 999;
+    backdrop-filter: blur(12px);
+}
+
+/* Page Indicator */
+#pageIndicator {
+    position: fixed;
+    bottom: 20px;
+    right: 0px;
+    font-size: 10px;
+    padding: 2px;
+    color: #ffffff;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 3px;
+    backdrop-filter: blur(6px);
+}
+
+/* Bookmarked Item Highlight */
+.item.bookmarked {
+    background: rgba(255, 246, 194, 0.6);
+    border-left: 4px solid rgba(29, 4, 141, 0.6);
+    font-weight: bold;
+}
+.item.bookmarked:focus {
+    border-color: red;
+}
+
+
+/* Bookmark Button */
+#bookmarkBtn {
+    position: absolute;
+    right: 10px;
+    top: -3px;
+    font-size: 20px;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    display: none;
+}
+
+/* Article Title */
+#articleTitle {
+    background: rgba(51, 51, 51, 0.6);
+    color: #ffffff;
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    font-size: 14px;
+}
+
+h2 {font-size: 16px;}
