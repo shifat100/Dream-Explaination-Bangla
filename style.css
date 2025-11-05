@@ -276,3 +276,33 @@ p {
 }
 
 h2 {font-size: 16px;}
+
+@media screen and (max-width: 128px) and (max-height: 160px) {
+    * {
+        font-size: 10px;
+    }
+    #listView {
+    height: calc(100vh - 80px);
+}
+#articleView {
+    display: none;
+    height: calc(100vh - 33px);
+}
+.item {
+    padding: 3px;
+    margin-bottom: 2px;
+    border-radius: 5px;
+    font-size: 10px;
+}
+#searchBar {
+    display: flex;
+    gap: 3px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 3px;
+}
+
+#searchInput {
+    padding: 3px;
+    font-size: 10px;
+}
+}
