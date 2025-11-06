@@ -1,5 +1,3 @@
-
-
 if (!Array.prototype.includes) {
     Array.prototype.includes = function (searchElement, fromIndex) {
         if (this == null) throw new TypeError('"this" is null or not defined');
@@ -225,6 +223,21 @@ function showArticle(idx) {
     try { document.activeElement.blur(); } catch (e) { }
 }
 
+function handleBackAction() {
+    if (mode === "list") {
+        window.close && window.close();
+    } else if (mode === "article") {
+        backToList();
+    } else if (mode === "search") {
+        // If in search mode, pressing back key can either exit search or go back to list
+        // For simplicity, let's make it go back to list view from search
+        mode = "list";
+        updateSoftkeys();
+        renderList(searchInput.value);
+        try { searchInput.focus(); } catch (e) { }
+    }
+}
+
 function backToList() {
     articleView.scrollTop = 0;
     articleView.style.display = "none";
@@ -274,7 +287,7 @@ function updateSoftkeys() {
         leftKey.textContent = "Search";
     } else if (mode === "article") {
         rightKey.textContent = "Back";
-        centerKey.textContent = "Select";
+        centerKey.textContent = "Select"; // Changed from "Select" to make more sense for article view
         leftKey.textContent = "Dark";
     } else if (mode === "search") {
         rightKey.textContent = "";
@@ -286,10 +299,10 @@ function updateSoftkeys() {
 
 searchInput.oninput = function () {
     currentPage = 0;
-    mode = "search";
+    mode = "search"; // Set mode to search when input is active
     renderList(searchInput.value);
     updateSoftkeys();
-    try { searchInput.focus(); } catch (e) { }
+    // No need to focus searchInput again, it's already focused by user typing
 };
 
 
@@ -299,12 +312,11 @@ document.addEventListener("keydown", function (e) {
         if (code === "ArrowDown" || code === "8") { focusItem(currentIndex + 1); e.preventDefault(); }
         else if (code === "ArrowUp" || code === "2") { focusItem(currentIndex - 1); e.preventDefault(); }
         else if (code === "Enter") { openItem(); }
-        else if (code === "SoftLeft" || code === "Escape" || code === "F1") { searchInput.focus(); mode = "search"; updateSoftkeys(); }
-        else if (code === "SoftRight" || code === "F2") { window.close && window.close(); }
-        window.addEventListener("back", (event) => {
-            event.preventDefault();
-            window.close && window.close();
-        });
+        else if (code === "SoftLeft" || code === "F1") { searchInput.focus(); mode = "search"; updateSoftkeys(); }
+        else if (code === "SoftRight" || code === "Escape" || code === "F2") { // Added Escape here for browser back functionality
+            e.preventDefault(); // Prevent default browser back
+            handleBackAction();
+        }
     } else if (mode === "article") {
         if (code === "ArrowUp") { articleView.scrollBy({ top: -80, behavior: 'smooth' }); e.preventDefault(); }
         else if (code === "ArrowDown") { articleView.scrollBy({ top: 80, behavior: 'smooth' }); e.preventDefault(); }
@@ -317,32 +329,43 @@ document.addEventListener("keydown", function (e) {
         else if (code === "9") { articleView.scrollTop = articleView.scrollHeight; }
         else if (code === "ArrowLeft" || code === "4") { showArticle(currentIndex - 1); articleView.scrollTop = 0; }
         else if (code === "ArrowRight" || code === "6") { showArticle(currentIndex + 1); articleView.scrollTop = 0; }
-        else if (code === "SoftLeft" || code === "Escape" || code === "F1") { toggleDark(); }
-        else if (code === "SoftRight" || code === "F2") { backToList(); }
-        window.addEventListener("back", (event) => {
-            event.preventDefault();
-            backToList();
-        });
+        else if (code === "SoftLeft" || code === "F1") { toggleDark(); }
+        else if (code === "SoftRight" || code === "Escape" || code === "F2") { // Added Escape here for browser back functionality
+            e.preventDefault(); // Prevent default browser back
+            handleBackAction();
+        }
     } else if (mode === "search") {
         if (code === "Enter") { mode = "list"; updateSoftkeys(); renderList(searchInput.value); }
+        else if (code === "SoftRight" || code === "Escape" || code === "F2") { // Allow back from search
+            e.preventDefault();
+            handleBackAction();
+        }
     }
 });
 
+// KaiOS specific 'back' event listener - keep it as a secondary handler
+// It's attached to `window` for broader reach in KaiOS.
+window.addEventListener("back", function (event) {
+    event.preventDefault(); // This is crucial to prevent the default KaiOS system back behavior
+    handleBackAction();
+});
 
 leftKey.addEventListener("click", function () {
     if (mode === "list") { searchInput.focus(); mode = "search"; updateSoftkeys(); }
     else if (mode === "article") { toggleDark(); }
-    else if (mode === "search") { mode = "list"; updateSoftkeys(); renderList(); }
+    else if (mode === "search") {
+        // If left key is pressed in search, typically implies cancelling search or going back
+        handleBackAction(); // Use the general back action
+    }
 });
 centerKey.addEventListener("click", function () {
     if (mode === "list") openItem();
-    else if (mode === "article") { }
+    else if (mode === "article") { /* No specific action for center key in article view currently */ }
     else if (mode === "search") { mode = "list"; updateSoftkeys(); renderList(searchInput.value); }
 });
 rightKey.addEventListener("click", function () {
-    if (mode === "list") window.close && window.close();
-    else if (mode === "article") backToList();
-    else if (mode === "search") { mode = "list"; updateSoftkeys(); renderList(); }
+    handleBackAction(); // All right key presses trigger the general back action
 });
+
 
 bookmarkBtn.addEventListener("click", toggleBookmark);
