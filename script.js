@@ -312,8 +312,8 @@ document.addEventListener("keydown", function (e) {
         if (code === "ArrowDown" || code === "8") { focusItem(currentIndex + 1); e.preventDefault(); }
         else if (code === "ArrowUp" || code === "2") { focusItem(currentIndex - 1); e.preventDefault(); }
         else if (code === "Enter") { openItem(); }
-        else if (code === "SoftLeft" || code === "F1") { searchInput.focus(); mode = "search"; updateSoftkeys(); }
-        else if (code === "SoftRight" || code === "Escape" || code === "F2") { // Added Escape here for browser back functionality
+        else if (code === "SoftLeft" || code === "Escape" || code === "F1") { searchInput.focus(); mode = "search"; updateSoftkeys(); }
+        else if (code === "SoftRight" || code === "F2") { // Added Escape here for browser back functionality
             e.preventDefault(); // Prevent default browser back
             handleBackAction();
         }
@@ -329,8 +329,8 @@ document.addEventListener("keydown", function (e) {
         else if (code === "9") { articleView.scrollTop = articleView.scrollHeight; }
         else if (code === "ArrowLeft" || code === "4") { showArticle(currentIndex - 1); articleView.scrollTop = 0; }
         else if (code === "ArrowRight" || code === "6") { showArticle(currentIndex + 1); articleView.scrollTop = 0; }
-        else if (code === "SoftLeft" || code === "F1") { toggleDark(); }
-        else if (code === "SoftRight" || code === "Escape" || code === "F2") { // Added Escape here for browser back functionality
+        else if (code === "SoftLeft" || code === "F1"|| code === "Escape") { toggleDark(); }
+        else if (code === "SoftRight" || code === "F2") { // Added Escape here for browser back functionality
             e.preventDefault(); // Prevent default browser back
             handleBackAction();
         }
@@ -369,3 +369,4 @@ rightKey.addEventListener("click", function () {
 
 
 bookmarkBtn.addEventListener("click", toggleBookmark);
+
