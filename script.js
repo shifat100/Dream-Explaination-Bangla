@@ -301,7 +301,7 @@ searchInput.oninput = function () {
     currentPage = 0;
     mode = "search"; // Set mode to search when input is active
     renderList(searchInput.value);
-    updateSoftkeys();
+    
     // No need to focus searchInput again, it's already focused by user typing
 };
 
@@ -312,7 +312,7 @@ document.addEventListener("keydown", function (e) {
         if (code === "ArrowDown" || code === "8") { focusItem(currentIndex + 1); e.preventDefault(); }
         else if (code === "ArrowUp" || code === "2") { focusItem(currentIndex - 1); e.preventDefault(); }
         else if (code === "Enter") { openItem(); }
-        else if (code === "SoftLeft" || code === "Escape" || code === "F1") { searchInput.focus(); mode = "search"; updateSoftkeys(); }
+        else if (code === "SoftLeft" || code === "Escape" || code === "F1") { searchInput.focus(); mode = "search"; }
         else if (code === "SoftRight" || code === "F2") { // Added Escape here for browser back functionality
             e.preventDefault(); // Prevent default browser back
             handleBackAction();
@@ -369,4 +369,5 @@ rightKey.addEventListener("click", function () {
 
 
 bookmarkBtn.addEventListener("click", toggleBookmark);
+
 
