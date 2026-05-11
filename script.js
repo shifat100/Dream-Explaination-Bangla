@@ -313,10 +313,10 @@ document.addEventListener("keydown", function (e) {
         else if (code === "ArrowUp" || code === "2") { focusItem(currentIndex - 1); e.preventDefault(); }
         else if (code === "Enter") { openItem(); }
         else if (code === "SoftLeft" || code === "Escape" || code === "F1") { searchInput.focus(); mode = "search"; }
-        else if (code === "SoftRight" || code === "F2") { // Added Escape here for browser back functionality
+        /*else if (code === "SoftRight" || code === "F2") { // Added Escape here for browser back functionality
             e.preventDefault(); // Prevent default browser back
             handleBackAction();
-        }
+        }*/
     } else if (mode === "article") {
         if (code === "ArrowUp") { articleView.scrollBy({ top: -80, behavior: 'smooth' }); e.preventDefault(); }
         else if (code === "ArrowDown") { articleView.scrollBy({ top: 80, behavior: 'smooth' }); e.preventDefault(); }
@@ -330,23 +330,21 @@ document.addEventListener("keydown", function (e) {
         else if (code === "ArrowLeft" || code === "4") { showArticle(currentIndex - 1); articleView.scrollTop = 0; }
         else if (code === "ArrowRight" || code === "6") { showArticle(currentIndex + 1); articleView.scrollTop = 0; }
         else if (code === "SoftLeft" || code === "F1"|| code === "Escape") { toggleDark(); }
-        else if (code === "SoftRight" || code === "F2") { // Added Escape here for browser back functionality
+        /*else if (code === "SoftRight" || code === "F2") { // Added Escape here for browser back functionality
             e.preventDefault(); // Prevent default browser back
             handleBackAction();
-        }
+        }*/
     } else if (mode === "search") {
         if (code === "Enter") { mode = "list"; updateSoftkeys(); renderList(searchInput.value); }
-        else if (code === "SoftRight" || code === "Escape" || code === "F2") { // Allow back from search
+        /*else if (code === "SoftRight" || code === "Escape" || code === "F2") { // Allow back from search
             e.preventDefault();
             handleBackAction();
-        }
+        }*/
     }
 });
 
-// KaiOS specific 'back' event listener - keep it as a secondary handler
-// It's attached to `window` for broader reach in KaiOS.
 window.addEventListener("back", function (event) {
-    event.preventDefault(); // This is crucial to prevent the default KaiOS system back behavior
+    event.preventDefault(); 
     handleBackAction();
 });
 
@@ -354,7 +352,6 @@ leftKey.addEventListener("click", function () {
     if (mode === "list") { searchInput.focus(); mode = "search"; updateSoftkeys(); }
     else if (mode === "article") { toggleDark(); }
     else if (mode === "search") {
-        // If left key is pressed in search, typically implies cancelling search or going back
         handleBackAction(); // Use the general back action
     }
 });
