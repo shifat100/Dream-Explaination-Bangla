@@ -1,0 +1,15 @@
+{
+    "name": "swapnakosh.username",
+    "title": "স্বপ্নকোষ",
+    "version": "1.0.0",
+    "description": "ইবনে সীরীন (রহ.) এর ইসলামি স্বপ্নের ব্যাখ্যা ও অভিধান",
+    "framework": "ubuntu-touch-20.04",
+    "maintainer": "আপনার নাম <your-email@example.com>",
+    "architecture": "all",
+    "hooks": {
+        "swapnakosh": {
+            "apparmor": "swapnakosh.apparmor",
+            "desktop": "swapnakosh.desktop"
+        }
+    }
+}
