@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=স্বপ্নকোষ
+Comment=ইবনে সীরীন এর স্বপ্নের ব্যাখ্যা
+Exec=webapp-container --store-session-data --enable-ulimits ./index.html
+Icon=icon.png
+Terminal=false
+Type=Application
+X-Ubuntu-Touch=true
