@@ -1,10 +1,10 @@
 {
-    "name": "swapnakosh.username",
+    "name": "shifat100.swapnokosh",
     "title": "স্বপ্নকোষ",
     "version": "1.0.0",
     "description": "ইবনে সীরীন (রহ.) এর ইসলামি স্বপ্নের ব্যাখ্যা ও অভিধান",
     "framework": "ubuntu-touch-20.04",
-    "maintainer": "আপনার নাম <your-email@example.com>",
+    "maintainer": "A.I. SHIFAT <alshahreya95@gmail.com>",
     "architecture": "all",
     "hooks": {
         "swapnakosh": {
