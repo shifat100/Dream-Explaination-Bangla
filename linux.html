@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>স্বপ্নকোষ - Ibn Sirin (Ubuntu Touch)</title>
+    <!-- Ubuntu Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Ubuntu Color Palette & Suru Design Tokens */
+        :root {
+            --ubuntu-aubergine: #77216F;
+            --ubuntu-dark-aubergine: #2C001E;
+            --ubuntu-orange: #E95420;
+            --ubuntu-mid-aubergine: #5E2750;
+            --ubuntu-warm-grey: #AEA79F;
+            --ubuntu-cool-grey: #333333;
+            
+            --bg-color: #F7F7F7;
+            --surface-color: #FFFFFF;
+            --text-primary: #111111;
+            --text-secondary: #5C5C5C;
+            --border-color: #E2E2E2;
+            --hover-color: #F0E8EE;
+            --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            --header-height: 56px;
+            --border-radius: 12px;
+        }
+
+        body.dark {
+            --bg-color: #121212;
+            --surface-color: #1E1E1E;
+            --text-primary: #F0F0F0;
+            --text-secondary: #AAAAAA;
+            --border-color: #2F2F2F;
+            --hover-color: #2A1D27;
+            --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Ubuntu', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        /* Ubuntu Touch Top Bar */
+        .ubuntu-header {
+            height: var(--header-height);
+            background: linear-gradient(135deg, var(--ubuntu-aubergine), var(--ubuntu-dark-aubergine));
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 12px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+        }
+
+        .header-left, .header-right {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .ubuntu-header h1 {
+            font-size: 19px;
+            font-weight: 500;
+            letter-spacing: 0.2px;
+        }
+
+        .icon-btn {
+            background: transparent;
+            border: none;
+            color: #FFFFFF;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .icon-btn:active {
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        /* Container */
+        .ubuntu-container {
+            flex: 1;
+            max-width: 720px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 14px 14px 60px 14px;
+        }
+
+        /* Search Bar (Suru Flat Style) */
+        .search-card {
+            display: flex;
+            align-items: center;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 6px 12px;
+            margin-bottom: 12px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .search-icon {
+            color: var(--ubuntu-orange);
+            margin-right: 8px;
+            flex-shrink: 0;
+        }
+
+        .search-card input {
+            width: 100%;
+            border: none;
+            outline: none;
+            font-family: inherit;
+            font-size: 15px;
+            background: transparent;
+            color: var(--text-primary);
+        }
+
+        .clear-btn {
+            color: var(--text-secondary);
+            width: 28px;
+            height: 28px;
+        }
+
+        /* Filter Chips */
+        .chip-container {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .chip {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            border: 1px solid var(--border-color);
+            background: var(--surface-color);
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 500;
+        }
+
+        .chip.active {
+            background: var(--ubuntu-orange);
+            color: #FFFFFF;
+            border-color: var(--ubuntu-orange);
+        }
+
+        /* List Items (Ubuntu Touch Suru List) */
+        .suru-list {
+            background: var(--surface-color);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+        }
+
+        .suru-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 16px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background 0.1s;
+        }
+
+        .suru-item:last-child {
+            border-bottom: none;
+        }
+
+        .suru-item:active {
+            background: var(--hover-color);
+        }
+
+        .item-title {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-primary);
+            line-height: 1.4;
+        }
+
+        .item-badge {
+            color: var(--ubuntu-orange);
+            font-size: 14px;
+            margin-left: 8px;
+        }
+
+        .item-chevron {
+            color: var(--text-secondary);
+            opacity: 0.6;
+            margin-left: 10px;
+            flex-shrink: 0;
+        }
+
+        /* Article View */
+        .suru-article {
+            background: var(--surface-color);
+            border-radius: var(--border-radius);
+            padding: 20px 18px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--card-shadow);
+            animation: fadeIn 0.2s ease-in-out;
+        }
+
+        .article-toolbar {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 14px;
+        }
+
+        .font-controls {
+            display: flex;
+            gap: 6px;
+            background: var(--bg-color);
+            padding: 3px;
+            border-radius: 8px;
+        }
+
+        .suru-pill-btn {
+            border: none;
+            background: var(--surface-color);
+            color: var(--text-primary);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .article-title {
+            font-size: 20px;
+            color: var(--ubuntu-aubergine);
+            margin-bottom: 14px;
+            font-weight: 700;
+            line-height: 1.35;
+            border-left: 4px solid var(--ubuntu-orange);
+            padding-left: 10px;
+        }
+
+        body.dark .article-title {
+            color: #FFAA80;
+        }
+
+        .article-content {
+            color: var(--text-primary);
+            line-height: 1.7;
+            word-break: break-word;
+        }
+
+        /* Pagination Bar */
+        .pagination-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 16px;
+            padding: 0 4px;
+        }
+
+        .suru-btn {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-family: inherit;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .suru-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        #pageIndicator {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* Loading Overlay */
+        .loading-bar {
+            position: fixed;
+            top: var(--header-height);
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            color: #FFF;
+            font-size: 12px;
+            padding: 4px;
+            text-align: center;
+            z-index: 99;
+        }
+
+        .progress-fill {
+            height: 3px;
+            background: var(--ubuntu-orange);
+            width: 0%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: width 0.2s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Ubuntu Touch Header / Top Bar -->
+    <header class="ubuntu-header">
+        <div class="header-left">
+            <button id="backBtn" class="icon-btn" title="পিছনে" style="display: none;">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            </button>
+            <h1 id="appTitle">স্বপ্নকোষ</h1>
+        </div>
+        <div class="header-right">
+            <button id="bookmarkBtn" class="icon-btn" title="বুকমার্ক" style="display: none;">
+                <svg id="bookmarkIcon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </button>
+            <button id="themeToggleBtn" class="icon-btn" title="ডার্ক মোড">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Loading Bar -->
+    <div id="loadingOverlay" class="loading-bar">
+        <div id="progressFill" class="progress-fill"></div>
+        <span id="loadingText">লোড হচ্ছে... 0%</span>
+    </div>
+
+    <!-- Main Container -->
+    <main class="ubuntu-container">
+        <!-- Search Section -->
+        <div id="searchSection" class="search-card">
+            <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input id="searchInput" type="search" placeholder="স্বপ্নের অর্থ অনুসন্ধান করুন..." />
+            <button id="clearSearchBtn" class="icon-btn clear-btn" style="display: none;">✕</button>
+        </div>
+
+        <!-- Filter Chips (All vs Bookmarked) -->
+        <div id="filterChips" class="chip-container">
+            <button class="chip active" data-filter="all">সব বিষয়</button>
+            <button class="chip" data-filter="bookmarks">★ বুকমার্কস</button>
+        </div>
+
+        <!-- List View -->
+        <div id="listView" class="suru-list"></div>
+
+        <!-- Pagination Bar -->
+        <div id="paginationBar" class="pagination-bar">
+            <button id="prevPageBtn" class="suru-btn">‹ পূর্ববর্তী</button>
+            <span id="pageIndicator">পৃষ্ঠা ১/১</span>
+            <button id="nextPageBtn" class="suru-btn">পরবর্তী ›</button>
+        </div>
+
+        <!-- Article View -->
+        <article id="articleView" class="suru-article" style="display: none;">
+            <div class="article-toolbar">
+                <div class="font-controls">
+                    <button id="decreaseFont" class="suru-pill-btn">A-</button>
+                    <button id="increaseFont" class="suru-pill-btn">A+</button>
+                </div>
+            </div>
+            <h2 id="articleTitle" class="article-title"></h2>
+            <div id="articleContent" class="article-content"></div>
+        </article>
+    </main>
+
+    <script>
+        var currentPage = 0, pageSize = 12;
+        var currentArticleIndex = 0;
+        var mode = "list"; // "list" | "article"
+        var activeFilter = "all"; // "all" | "bookmarks"
+        var data = [], filteredData = [], bookmarks = [];
+        var fontSize = 16;
+        var isDark = localStorage.getItem("theme") === "dark";
+
+        // DOM References
+        var appTitle = document.getElementById("appTitle");
+        var backBtn = document.getElementById("backBtn");
+        var bookmarkBtn = document.getElementById("bookmarkBtn");
+        var bookmarkIcon = document.getElementById("bookmarkIcon");
+        var themeToggleBtn = document.getElementById("themeToggleBtn");
+        var searchSection = document.getElementById("searchSection");
+        var searchInput = document.getElementById("searchInput");
+        var clearSearchBtn = document.getElementById("clearSearchBtn");
+        var filterChips = document.getElementById("filterChips");
+        var listView = document.getElementById("listView");
+        var paginationBar = document.getElementById("paginationBar");
+        var prevPageBtn = document.getElementById("prevPageBtn");
+        var nextPageBtn = document.getElementById("nextPageBtn");
+        var pageIndicator = document.getElementById("pageIndicator");
+        var articleView = document.getElementById("articleView");
+        var articleTitle = document.getElementById("articleTitle");
+        var articleContent = document.getElementById("articleContent");
+        var decreaseFont = document.getElementById("decreaseFont");
+        var increaseFont = document.getElementById("increaseFont");
+        var loadingOverlay = document.getElementById("loadingOverlay");
+        var progressFill = document.getElementById("progressFill");
+        var loadingText = document.getElementById("loadingText");
+
+        // Initialize Theme
+        if (isDark) document.body.classList.add("dark");
+
+        // Initialize Bookmarks
+        try {
+            bookmarks = JSON.parse(localStorage.getItem("bookmarks")) || [];
+        } catch (e) {
+            bookmarks = [];
+        }
+
+        // Database Layer
+        var dbName = "dreamAppDB";
+        var storeName = "dreamData";
+        var db;
+
+        function openDB(callback) {
+            var req = indexedDB.open(dbName, 1);
+            req.onupgradeneeded = function (e) {
+                db = e.target.result;
+                if (!db.objectStoreNames.contains(storeName)) {
+                    db.createObjectStore(storeName, { keyPath: "id", autoIncrement: true });
+                }
+            };
+            req.onsuccess = function (e) { db = e.target.result; callback(); };
+            req.onerror = function () { callback(); };
+        }
+
+        function saveToDB(allData, callback) {
+            var tx = db.transaction(storeName, "readwrite");
+            var store = tx.objectStore(storeName);
+            store.clear().onsuccess = function () {
+                allData.forEach(function (item) { store.add(item); });
+            };
+            tx.oncomplete = function () { if (callback) callback(); };
+        }
+
+        function loadFromDB(callback) {
+            var tx = db.transaction(storeName, "readonly");
+            var store = tx.objectStore(storeName);
+            var all = [];
+            store.openCursor().onsuccess = function (e) {
+                var cursor = e.target.result;
+                if (cursor) { all.push(cursor.value); cursor.continue(); }
+                else { callback(all); }
+            };
+            tx.onerror = function () { callback([]); };
+        }
+
+        function loadAllFromJSON(callback) {
+            var files = ["data1.json", "data2.json", "data3.json", "data4.json", "data5.json"];
+            var loaded = 0, allData = [];
+
+            files.forEach(function (f) {
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", f, true);
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        try {
+                            allData = allData.concat(JSON.parse(xhr.responseText));
+                        } catch (e) {}
+                    }
+                    loaded++;
+                    var pct = Math.round((loaded / files.length) * 100);
+                    progressFill.style.width = pct + "%";
+                    loadingText.textContent = "লোড হচ্ছে... " + pct + "%";
+
+                    if (loaded === files.length) {
+                        loadingOverlay.style.display = "none";
+                        saveToDB(allData, function () {
+                            data = allData;
+                            callback();
+                        });
+                    }
+                };
+                xhr.onerror = function () {
+                    loaded++;
+                    if (loaded === files.length) {
+                        loadingOverlay.style.display = "none";
+                        callback();
+                    }
+                };
+                xhr.send();
+            });
+        }
+
+        // App Startup
+        openDB(function () {
+            loadFromDB(function (dbData) {
+                if (dbData.length > 0) {
+                    data = dbData;
+                    loadingOverlay.style.display = "none";
+                    applyFilterAndRender();
+                } else {
+                    loadAllFromJSON(function () {
+                        applyFilterAndRender();
+                    });
+                }
+            });
+        });
+
+        // Render & Filter Logic
+        function applyFilterAndRender() {
+            var query = searchInput.value.trim().toLowerCase();
+            filteredData = data.filter(function (item) {
+                var title = (item.title || "").toLowerCase();
+                var content = (item.content || "").toLowerCase();
+                var matchesQuery = !query || title.includes(query) || content.includes(query);
+                var matchesBookmark = (activeFilter === "bookmarks") ? bookmarks.includes(title) : true;
+                return matchesQuery && matchesBookmark;
+            });
+
+            renderList();
+        }
+
+        function renderList() {
+            listView.innerHTML = "";
+            var totalPages = Math.ceil(filteredData.length / pageSize) || 1;
+            if (currentPage >= totalPages) currentPage = 0;
+
+            var start = currentPage * pageSize;
+            var pageItems = filteredData.slice(start, start + pageSize);
+
+            if (pageItems.length === 0) {
+                listView.innerHTML = "<div style='padding:30px; text-align:center; color:var(--text-secondary);'>কোন ফলাফল পাওয়া যায়নি</div>";
+                pageIndicator.textContent = "পৃষ্ঠা ০/০";
+                prevPageBtn.disabled = true;
+                nextPageBtn.disabled = true;
+                return;
+            }
+
+            pageItems.forEach(function (item, idx) {
+                var globalIdx = start + idx;
+                var div = document.createElement("div");
+                div.className = "suru-item";
+                
+                var isBookmarked = bookmarks.includes((item.title || "").trim().toLowerCase());
+                
+                div.innerHTML = `
+                    <div style="display:flex; align-items:center;">
+                        <span class="item-title">${item.title || "(শিরোনামহীন)"}</span>
+                        ${isBookmarked ? '<span class="item-badge">★</span>' : ''}
+                    </div>
+                    <svg class="item-chevron" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                `;
+
+                div.addEventListener("click", function () {
+                    showArticle(globalIdx);
+                });
+                listView.appendChild(div);
+            });
+
+            // Pagination Controls
+            pageIndicator.textContent = `পৃষ্ঠা ${currentPage + 1}/${totalPages}`;
+            prevPageBtn.disabled = currentPage === 0;
+            nextPageBtn.disabled = currentPage >= totalPages - 1;
+        }
+
+        // Article Navigation
+        function showArticle(globalIndex) {
+            if (globalIndex < 0 || globalIndex >= filteredData.length) return;
+            currentArticleIndex = globalIndex;
+            var obj = filteredData[globalIndex];
+
+            articleTitle.textContent = obj.title || "(শিরোনাম নেই)";
+            articleContent.innerHTML = obj.content || "";
+            articleContent.style.fontSize = fontSize + "px";
+
+            // View Switching
+            mode = "article";
+            searchSection.style.display = "none";
+            filterChips.style.display = "none";
+            listView.style.display = "none";
+            paginationBar.style.display = "none";
+            articleView.style.display = "block";
+
+            // Header State
+            backBtn.style.display = "flex";
+            bookmarkBtn.style.display = "flex";
+            appTitle.textContent = "স্বপ্নের ব্যাখ্যা";
+            updateBookmarkIcon();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function backToList() {
+            mode = "list";
+            articleView.style.display = "none";
+            searchSection.style.display = "flex";
+            filterChips.style.display = "flex";
+            listView.style.display = "block";
+            paginationBar.style.display = "flex";
+
+            backBtn.style.display = "none";
+            bookmarkBtn.style.display = "none";
+            appTitle.textContent = "স্বপ্নকোষ";
+            renderList();
+        }
+
+        // Bookmark Logic
+        function toggleBookmark() {
+            var title = (articleTitle.textContent || "").trim().toLowerCase();
+            if (!title) return;
+
+            var index = bookmarks.indexOf(title);
+            if (index > -1) {
+                bookmarks.splice(index, 1);
+            } else {
+                bookmarks.push(title);
+            }
+
+            localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
+            updateBookmarkIcon();
+        }
+
+        function updateBookmarkIcon() {
+            var title = (articleTitle.textContent || "").trim().toLowerCase();
+            if (bookmarks.includes(title)) {
+                bookmarkIcon.setAttribute("fill", "#E95420");
+                bookmarkIcon.setAttribute("stroke", "#E95420");
+            } else {
+                bookmarkIcon.setAttribute("fill", "none");
+                bookmarkIcon.setAttribute("stroke", "currentColor");
+            }
+        }
+
+        // Event Listeners
+        backBtn.addEventListener("click", backToList);
+        bookmarkBtn.addEventListener("click", toggleBookmark);
+
+        themeToggleBtn.addEventListener("click", function () {
+            document.body.classList.toggle("dark");
+            var darkActive = document.body.classList.contains("dark");
+            localStorage.setItem("theme", darkActive ? "dark" : "light");
+        });
+
+        searchInput.addEventListener("input", function () {
+            clearSearchBtn.style.display = this.value ? "flex" : "none";
+            currentPage = 0;
+            applyFilterAndRender();
+        });
+
+        clearSearchBtn.addEventListener("click", function () {
+            searchInput.value = "";
+            this.style.display = "none";
+            currentPage = 0;
+            applyFilterAndRender();
+        });
+
+        // Filter Chips (All vs Bookmarked)
+        document.querySelectorAll(".chip").forEach(function (chip) {
+            chip.addEventListener("click", function () {
+                document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+                this.classList.add("active");
+                activeFilter = this.dataset.filter;
+                currentPage = 0;
+                applyFilterAndRender();
+            });
+        });
+
+        // Pagination Clicks
+        prevPageBtn.addEventListener("click", function () {
+            if (currentPage > 0) {
+                currentPage--;
+                renderList();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+
+        nextPageBtn.addEventListener("click", function () {
+            var totalPages = Math.ceil(filteredData.length / pageSize);
+            if (currentPage < totalPages - 1) {
+                currentPage++;
+                renderList();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+
+        // Font Resizing
+        increaseFont.addEventListener("click", function () {
+            fontSize = Math.min(26, fontSize + 1.5);
+            articleContent.style.fontSize = fontSize + "px";
+        });
+
+        decreaseFont.addEventListener("click", function () {
+            fontSize = Math.max(13, fontSize - 1.5);
+            articleContent.style.fontSize = fontSize + "px";
+        });
+    </script>
+</body>
+
+      </html>
